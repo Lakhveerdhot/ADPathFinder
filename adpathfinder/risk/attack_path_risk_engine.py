@@ -1,33 +1,101 @@
 class AttackPathRiskEngine:
 
     PRIVILEGED_GROUP_WEIGHTS = {
-        "domain admins": 40,
+
         "enterprise admins": 50,
+
         "schema admins": 50,
+
+        "domain admins": 40,
+
         "administrators": 35,
-        "account operators": 25,
-        "backup operators": 25,
-        "server operators": 25,
+
+        "gg-server-admins": 30,
+
+        "gg-it-admins": 25,
+
+        "account operators": 20,
+
+        "backup operators": 20,
+
+        "server operators": 20,
+
         "print operators": 15,
-        "group policy creator owners": 30,
-        "gg-it-admins": 30,
-        "gg-server-admins": 25,
+
+        "group policy creator owners": 20,
+
     }
+
 
     PATH_LENGTH_WEIGHTS = {
+
         1: 30,
+
         2: 25,
+
         3: 20,
+
         4: 15,
+
         5: 10,
+
     }
 
-    def calculate_score(self, attack_path):
 
-        target_group = (
-            attack_path.get("target_group", "")
-            .strip()
-            .lower()
+    def normalize_name(self, name):
+
+        return str(name).strip().lower()
+
+
+    def calculate_privileged_group_score(
+        self,
+        target_group
+    ):
+
+        group_name = self.normalize_name(
+            target_group
+        )
+
+        return self.PRIVILEGED_GROUP_WEIGHTS.get(
+            group_name,
+            10
+        )
+
+
+    def calculate_path_length_score(
+        self,
+        path_length
+    ):
+
+        if path_length in self.PATH_LENGTH_WEIGHTS:
+
+            return self.PATH_LENGTH_WEIGHTS[
+                path_length
+            ]
+
+        return 5
+
+
+    def calculate_direct_membership_score(
+        self,
+        path_length
+    ):
+
+        if path_length == 1:
+
+            return 20
+
+        return 0
+
+
+    def calculate_risk_score(
+        self,
+        attack_path
+    ):
+
+        target_group = attack_path.get(
+            "target_group",
+            ""
         )
 
         path_length = attack_path.get(
@@ -35,123 +103,178 @@ class AttackPathRiskEngine:
             0
         )
 
-        score = 0
 
-        # Target privilege score
-        privilege_score = (
-            self.PRIVILEGED_GROUP_WEIGHTS.get(
-                target_group,
-                15
+        privileged_group_score = (
+            self.calculate_privileged_group_score(
+                target_group
             )
         )
 
-        score += privilege_score
 
-        # Path complexity score
-        path_score = (
-            self.PATH_LENGTH_WEIGHTS.get(
-                path_length,
-                5
+        path_length_score = (
+            self.calculate_path_length_score(
+                path_length
             )
         )
 
-        score += path_score
 
-        # Direct membership receives additional priority
-        if path_length == 1:
+        direct_membership_score = (
+            self.calculate_direct_membership_score(
+                path_length
+            )
+        )
 
-            score += 20
 
-        return min(score, 100)
+        total_score = (
+            privileged_group_score
+            + path_length_score
+            + direct_membership_score
+        )
 
-    def determine_risk_level(self, score):
+
+        return {
+
+            "privileged_group_score":
+                privileged_group_score,
+
+            "path_length_score":
+                path_length_score,
+
+            "direct_membership_score":
+                direct_membership_score,
+
+            "total_score":
+                total_score,
+
+            "risk_level":
+                self.classify_risk(total_score),
+
+        }
+
+
+    @staticmethod
+    def classify_risk(score):
 
         if score >= 80:
+
             return "Critical"
 
         elif score >= 60:
+
             return "High"
 
         elif score >= 40:
+
             return "Medium"
 
         else:
+
             return "Low"
 
-    def prioritize_paths(self, attack_paths):
+
+    def prioritize_attack_paths(
+        self,
+        attack_paths
+    ):
 
         prioritized_paths = []
 
+
         for attack_path in attack_paths:
 
-            score = self.calculate_score(
+            risk_data = self.calculate_risk_score(
                 attack_path
             )
 
-            risk_level = self.determine_risk_level(
-                score
-            )
 
-            prioritized_path = attack_path.copy()
+            prioritized_path = {
+                **attack_path,
 
-            prioritized_path["risk_score"] = score
+                "risk_score":
+                    risk_data["total_score"],
 
-            prioritized_path["risk_level"] = (
-                risk_level
-            )
+                "risk_level":
+                    risk_data["risk_level"],
 
-            prioritized_path["priority"] = (
-                self.get_priority(risk_level)
-            )
+                "risk_breakdown": {
+
+                    "privileged_group_score":
+                        risk_data[
+                            "privileged_group_score"
+                        ],
+
+                    "path_length_score":
+                        risk_data[
+                            "path_length_score"
+                        ],
+
+                    "direct_membership_score":
+                        risk_data[
+                            "direct_membership_score"
+                        ],
+
+                }
+
+            }
+
 
             prioritized_paths.append(
                 prioritized_path
             )
 
+
         prioritized_paths.sort(
-            key=lambda path: path["risk_score"],
+            key=lambda path: path.get(
+                "risk_score",
+                0
+            ),
             reverse=True
         )
 
+
         return prioritized_paths
 
-    @staticmethod
-    def get_priority(risk_level):
 
-        priority_mapping = {
-            "Critical": "Immediate Investigation",
-            "High": "High Priority",
-            "Medium": "Moderate Priority",
-            "Low": "Low Priority",
-        }
-
-        return priority_mapping.get(
-            risk_level,
-            "Review Required"
-        )
-
-    def get_summary(self, prioritized_paths):
+    def get_summary(
+        self,
+        prioritized_paths
+    ):
 
         return {
-            "total_paths": len(prioritized_paths),
 
-            "critical": sum(
-                1 for path in prioritized_paths
-                if path["risk_level"] == "Critical"
-            ),
+            "total_attack_paths":
+                len(prioritized_paths),
 
-            "high": sum(
-                1 for path in prioritized_paths
-                if path["risk_level"] == "High"
-            ),
+            "critical_paths":
+                sum(
+                    1
+                    for path in prioritized_paths
+                    if path.get("risk_level")
+                    == "Critical"
+                ),
 
-            "medium": sum(
-                1 for path in prioritized_paths
-                if path["risk_level"] == "Medium"
-            ),
+            "high_risk_paths":
+                sum(
+                    1
+                    for path in prioritized_paths
+                    if path.get("risk_level")
+                    == "High"
+                ),
 
-            "low": sum(
-                1 for path in prioritized_paths
-                if path["risk_level"] == "Low"
-            ),
+            "medium_risk_paths":
+                sum(
+                    1
+                    for path in prioritized_paths
+                    if path.get("risk_level")
+                    == "Medium"
+                ),
+
+            "low_risk_paths":
+                sum(
+                    1
+                    for path in prioritized_paths
+                    if path.get("risk_level")
+                    == "Low"
+                ),
+
         }
