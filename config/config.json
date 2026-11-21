@@ -1,0 +1,8 @@
+{
+    "project_name": "ADPathFinder",
+    "version": "1.0.0",
+    "environment": "development",
+    "data_directory": "data",
+    "reports_directory": "reports",
+    "log_level": "INFO"
+}

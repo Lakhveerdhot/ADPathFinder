@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Sensitive files
+*.pem
+*.key
+credentials.json
+
+# Generated data
+data/raw/*
+data/processed/*
+reports/*
+
+# Keep empty directories
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!reports/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

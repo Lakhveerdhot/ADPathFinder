@@ -1,0 +1,59 @@
+2026-11-21 22:28:45,095 - INFO - Application initialization started
+2026-11-21 22:28:45,095 - INFO - ADPathFinder engine initialized
+2026-11-21 22:28:45,095 - INFO - Controller started
+2026-11-21 22:28:45,096 - INFO - ADPathFinder engine started
+2026-11-21 22:28:45,096 - INFO - Controller execution completed
+2026-11-21 22:28:45,096 - INFO - ADPathFinder engine stopped
+2026-11-21 22:42:35,893 - INFO - Application initialization started
+2026-11-21 22:42:35,893 - INFO - ADPathFinder engine initialized
+2026-11-21 22:42:35,894 - INFO - Controller started
+2026-11-21 22:42:35,894 - INFO - ADPathFinder engine started
+2026-11-21 22:42:35,894 - INFO - Starting data collection
+2026-11-21 22:42:35,895 - INFO - Data collection completed
+2026-11-21 22:42:35,895 - INFO - Users collected: 6
+2026-11-21 22:42:35,895 - INFO - Groups collected: 7
+2026-11-21 22:42:35,896 - INFO - Computers collected: 2
+2026-11-21 22:42:35,896 - INFO - Organizational Units collected: 7
+2026-11-21 22:42:35,896 - INFO - Controller execution completed
+2026-11-21 22:42:35,896 - INFO - ADPathFinder engine stopped
+2026-11-21 22:46:40,675 - INFO - Application initialization started
+2026-11-21 22:46:40,676 - INFO - ADPathFinder engine initialized
+2026-11-21 22:46:40,676 - INFO - Controller started
+2026-11-21 22:46:40,676 - INFO - ADPathFinder engine started
+2026-11-21 22:46:40,677 - INFO - Starting data collection
+2026-11-21 22:46:40,679 - INFO - Data collection completed
+2026-11-21 22:46:40,680 - INFO - Starting data normalization
+2026-11-21 22:46:40,680 - INFO - Data normalization completed
+2026-11-21 22:46:40,680 - INFO - Starting relationship mapping
+2026-11-21 22:46:40,681 - INFO - Relationships discovered: 17
+2026-11-21 22:46:40,682 - INFO - Saving processed data
+2026-11-21 22:46:40,685 - INFO - Processed data saved successfully
+2026-11-21 22:46:40,686 - INFO - ADPathFinder processing completed
+2026-11-21 22:46:40,686 - INFO - Controller execution completed
+2026-11-21 22:46:40,687 - INFO - ADPathFinder engine stopped
+2026-11-21 22:52:56,824 - INFO - Application initialization started
+2026-11-21 22:52:56,824 - INFO - ADPathFinder engine initialized
+2026-11-21 22:52:56,824 - INFO - Controller started
+2026-11-21 22:52:56,824 - INFO - ADPathFinder engine started
+2026-11-21 22:52:56,825 - INFO - Starting data collection
+2026-11-21 22:52:56,825 - INFO - Data collection completed
+2026-11-21 22:52:56,826 - INFO - Starting data normalization
+2026-11-21 22:52:56,826 - INFO - Data normalization completed
+2026-11-21 22:52:56,826 - INFO - Starting security analysis
+2026-11-21 22:52:56,826 - INFO - Security findings generated: 10
+2026-11-21 22:52:56,828 - INFO - Processed data and security reports exported
+2026-11-21 22:52:56,830 - INFO - Controller execution completed
+2026-11-21 22:52:56,830 - INFO - ADPathFinder engine stopped
+2026-11-21 23:00:10,542 - INFO - Application initialization started
+2026-11-21 23:00:10,542 - INFO - ADPathFinder engine initialized
+2026-11-21 23:00:10,543 - INFO - Controller started
+2026-11-21 23:00:10,543 - INFO - ADPathFinder engine started
+2026-11-21 23:00:10,544 - INFO - Starting data collection
+2026-11-21 23:00:10,545 - INFO - Data collection completed
+2026-11-21 23:00:10,545 - INFO - Starting data normalization
+2026-11-21 23:00:10,546 - INFO - Data normalization completed
+2026-11-21 23:00:10,546 - INFO - Starting security analysis
+2026-11-21 23:00:10,547 - INFO - Security findings generated: 10
+2026-11-21 23:00:10,551 - INFO - Processed data and security reports exported
+2026-11-21 23:00:10,554 - INFO - Controller execution completed
+2026-11-21 23:00:10,555 - INFO - ADPathFinder engine stopped
